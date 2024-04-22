@@ -40,9 +40,6 @@ class Customer(models.Model):
     )
 
 
-class Meta:
-    db_table = "store_Customers"
-    indexes = [models.Index(fields=["first_name", "last_name"])]
 
 
 class Order(models.Model):
