@@ -12,12 +12,11 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
     description = models.TextField()
-    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
-    Collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion)
 
 
@@ -30,14 +29,14 @@ class Customer(models.Model):
         (MEMBERSHIP_SILVER, "Silver"),
         (MEMBERSHIP_GOLD, "Gold"),
     ]
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    # phone = models.BigIntegerField()
-    birth_date = models.DateField(null=True)
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE
     )
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=255)
+    birth_date = models.DateField(null=True)
 
     class Meta:
         indexes = [models.Index(fields=["first_name", "last_name"])]
@@ -48,11 +47,11 @@ class Order(models.Model):
     PAYMENT_STATUS_COMPLETE = "C"
     PAYMENT_STATUS_FAILED = "F"
     PAYMENT_STATUS_CHOICES = [
-        (PAYMENT_STATUS_COMPLETE, "Complete"),
-        (PAYMENT_STATUS_PENDING, "Pending"),
-        (PAYMENT_STATUS_FAILED, "Failed"),
+        (PAYMENT_STATUS_COMPLETE, "Complete")(PAYMENT_STATUS_PENDING, "Pending")(
+            PAYMENT_STATUS_FAILED, "Failed"
+        )
     ]
-    placed_at = models.DateTimeField(auto_now_add=True)
+    Order_placed_at = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(
         max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING
     )
