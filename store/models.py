@@ -1,4 +1,5 @@
 from django.db import models
+from autoslug import AutoSlugField
 
 
 class Promotion(models.Model):
@@ -12,6 +13,7 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from="title", unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
