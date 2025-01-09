@@ -53,8 +53,14 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["id", "Order_placed_at"]
+    list_select_related = ["customer"]
+    list_display = ["id", "Order_placed_at", "customer_name"]
     list_per_page = 10
+
+    @admin.display(ordering="-placed_at")
+    def customer_name(self, order):
+        full_name = order.customer.first_name + " " + order.customer.last_name
+        return full_name
 
 
 @admin.register(OrderItem)

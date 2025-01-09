@@ -52,9 +52,11 @@ class Customer(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=["first_name", "last_name"])]
+        ordering = ["first_name", "last_name"]
 
     def __str__(self) -> str:
-        return self.first_name
+        full_name = f"{self.first_name} {self.last_name}"
+        return full_name
 
 
 class Order(models.Model):
