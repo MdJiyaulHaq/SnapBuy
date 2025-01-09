@@ -9,7 +9,15 @@ class Promotion(models.Model):
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey("Product", on_delete=models.SET_NULL, null=True, related_name='+')
+    featured_product = models.ForeignKey(
+        "Product", on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["title"]
 
 
 class Product(models.Model):
@@ -44,6 +52,9 @@ class Customer(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=["first_name", "last_name"])]
+
+    def __str__(self) -> str:
+        return self.first_name
 
 
 class Order(models.Model):
