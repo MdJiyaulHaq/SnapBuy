@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django.urls import reverse
 from store.models import *
 from store import models
 from django.db.models import Count
+from django.utils.html import format_html, urlencode
 
 
 # Register your models here.
@@ -16,14 +18,18 @@ class PromotionAdmin(admin.ModelAdmin):
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ["title", "featured_product", "product_count"]
-    list_editable = ["featured_product"]
     list_per_page = 10
 
-    @admin.display(ordering="product_count")
+    @admin.display(description="Product Count")
     def product_count(self, collection):
-        return collection.product_count
+        url = (
+            reverse("admin:store_product_changelist")
+            + "?"
+            + urlencode({"collection__id": f"{collection.id}"})
+        )
+        return format_html('<a href="{}">{}</a>', url, collection.product_count)
 
-    # modify the base queryset to include the product count:
+    # Modify the base queryset to include the product count:
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(product_count=Count("product"))
 
