@@ -1,6 +1,7 @@
 from django.contrib import admin
 from store.models import *
 from store import models
+from django.db.models import Count
 
 
 # Register your models here.
@@ -14,9 +15,17 @@ class PromotionAdmin(admin.ModelAdmin):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ["title", "featured_product"]
+    list_display = ["title", "featured_product", "product_count"]
     list_editable = ["featured_product"]
     list_per_page = 10
+
+    @admin.display(ordering="product_count")
+    def product_count(self, collection):
+        return collection.product_count
+
+    # modify the base queryset to include the product count:
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(product_count=Count("product"))
 
 
 @admin.register(Product)

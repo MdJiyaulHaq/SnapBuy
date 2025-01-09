@@ -30,6 +30,9 @@ class Product(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion)
 
+    def __str__(self):
+        return self.title
+
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=255)
