@@ -61,9 +61,9 @@ class ProductAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ["first_name", "email", "membership"]
     list_editable = ["membership"]
-    search_fields = ["first_name", "last_name", "email"]
-    ordering = ["first_name", "last_name"]
     list_per_page = 10
+    search_fields = ["first_name__istartswith", "last_name_istartswith"]
+    ordering = ["first_name", "last_name"]
 
 
 @admin.register(Order)
