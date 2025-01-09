@@ -21,10 +21,19 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["title", "price", "inventory_status"]
+    list_select_related = ["collection"]
+    list_display = [
+        "title",
+        "price",
+        "inventory_status",
+        "collection_featured_product",
+    ]
     list_editable = ["price"]
     list_per_page = 10
     search_fields = ["title", "description"]
+
+    def collection_featured_product(self, product):
+        return product.collection.featured_product
 
     @admin.display(ordering="inventory")
     def inventory_status(self, product):
