@@ -19,6 +19,7 @@ class PromotionAdmin(admin.ModelAdmin):
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ["title", "featured_product", "product_count"]
     list_per_page = 10
+    search_fields = ["title"]
 
     @admin.display(description="Product Count")
     def product_count(self, collection):
@@ -36,6 +37,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["collection"]
     actions = ["clear_inventory"]
     list_select_related = ["collection"]
     list_display = [
