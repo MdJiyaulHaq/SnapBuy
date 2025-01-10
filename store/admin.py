@@ -73,11 +73,13 @@ class CustomerAdmin(admin.ModelAdmin):
     list_editable = ["membership"]
     list_per_page = 10
     search_fields = ["first_name__istartswith", "last_name_istartswith"]
+    search_fields = ["first_name", "last_name"]
     ordering = ["first_name", "last_name"]
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["customer"]
     list_select_related = ["customer"]
     list_display = ["id", "Order_placed_at", "customer_name"]
     list_per_page = 10
