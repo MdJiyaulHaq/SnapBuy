@@ -1,5 +1,6 @@
 from django.db import models
 from autoslug import AutoSlugField
+from django.core.validators import *
 
 
 class Promotion(models.Model):
@@ -24,11 +25,15 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from="title")
     description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    # MinValueValidator ensures that the price is at least 1
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, validators=[MinValueValidator(1)]
+    )
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
-    promotions = models.ManyToManyField(Promotion)
+    #  blank=True validator allows the field to be empty
+    promotions = models.ManyToManyField(Promotion, blank=True)
 
     def __str__(self):
         return self.title
