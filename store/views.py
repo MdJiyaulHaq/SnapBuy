@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import get_object_or_404, render, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -18,7 +18,7 @@ def product_list(request):
 
 @api_view()
 def product_detail(request, pk):
-    product = Product.objects.get(id=pk)
+    product = get_object_or_404(Product, id=pk)
     serializer = ProductSerializer(product)
     serializer.data
     return Response(serializer.data)
@@ -26,4 +26,7 @@ def product_detail(request, pk):
 
 @api_view()
 def collection_detail(request, pk):
-    return Response("Ok")
+    collection = get_object_or_404(Collection, id=pk)
+    serializer = CollectionSerializer(collection)
+    serializer.data
+    return Response(serializer.data)
