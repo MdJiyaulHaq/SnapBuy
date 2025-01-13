@@ -19,7 +19,8 @@ def product_list(request):
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.validated_data
-        return Response("data is valid")
+        serializer.save
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view()
