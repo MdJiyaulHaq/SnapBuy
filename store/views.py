@@ -23,7 +23,7 @@ def product_list(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(["GET", "PUT"])
+@api_view(["GET", "PUT", "DELETE"])
 def product_detail(request, pk):
     product = get_object_or_404(Product, id=pk)
     if request.method == "GET":
@@ -36,6 +36,14 @@ def product_detail(request, pk):
         serializer.validated_data
         serializer.save
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    elif request.method == "DELETE":
+        if product.orderitem_set.count() > 0:
+            return Response(
+                {"error": "Item cannot be deleted."},
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+        product.delete
+        return Response({"error": "Item Deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view()
