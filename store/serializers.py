@@ -1,15 +1,33 @@
 from decimal import Decimal
 from rest_framework import serializers
-from .models import Product
+from .models import Product, Collection
+
+
+class CollectionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField(max_length=255)
 
 
 class ProductSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     title = serializers.CharField(max_length=255)
     price = serializers.DecimalField(max_digits=6, decimal_places=2)
-    # we can add a field not present in the Product class
-    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
+    # one way to serialize a relationship
+    collection = serializers.PrimaryKeyRelatedField(queryset=Collection.objects.all())
+    
+    # second way
+    # dont forget to write select related in views file
+    # queryset = Product.objects.select_related("collection").all()
+    collection = serializers.StringRelatedField()
 
-    def calculate_tax(self, product: Product):
-        return product.price * Decimal(1.18)
+    # third way
+    # make sure CollectionSerializer class is defined
+    collection = CollectionSerializer()
+
+    # fourth way
+    collection = serializers.HyperlinkedRelatedField(
+        queryset=Collection.objects.all(),
+        view_name="collection_detail",
+        # define a method collection_detail in views. also update url
+    )
 
