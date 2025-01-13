@@ -17,10 +17,8 @@ def product_list(request):
 
 
 @api_view()
-def product_detail(request, id):
-    # product = Product.objects.get(pk=id)
-    # if you want to handle exception as well
-    product = get_list_or_404(Product, pk=id)
+def product_detail(request, pk):
+    product = Product.objects.get(id=pk)
     serializer = ProductSerializer(product)
     serializer.data
     return Response(serializer.data)
