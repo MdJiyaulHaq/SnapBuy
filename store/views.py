@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
-from .models import Collection, Product
+from .models import Collection, Product, OrderItem
 from django.db.models import Count
 from .serializers import CollectionSerializer, ProductSerializer
 from rest_framework.views import APIView
@@ -20,15 +20,13 @@ class ProductViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {"request": self.request}
 
-    def delete(self, request, pk):
-        product = get_object_or_404(Product, id=pk)
-        if product.orderitem_set.count() > 0:
+    def destroy(self, request, *args, **kwargs):
+        if OrderItem.objects.filter(pk=kwargs["pk"]).count() > 0:
             return Response(
                 {"error": "Item cannot be deleted."},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
-        product.delete
-        return Response({"error": "Item Deleted"}, status=status.HTTP_204_NO_CONTENT)
+        return super().destroy(request, *args, **kwargs)
 
 
 # class ProductList(ListCreateAPIView):
@@ -160,16 +158,17 @@ class CollectionViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {"request": self.request}
 
-    def delete(self, delete, pk):
-        collection = get_object_or_404(
-            Collection.objects.annotate(product_count=Count("product")), id=pk
+    def destroy(self, request, *args, **kwargs):
+        collection = (
+            Collection.objects.filter(pk=kwargs["pk"])
+            .annotate(product_count=Count("product"))
+            .first()
         )
-        if collection.product_set.count() > 0:
+        if collection and collection.product_count > 0:
             return Response(
                 {"error": "collection cannot be deleted"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        collection.delete()
         return Response(
             {"error": "Collection Deleted"}, status=status.HTTP_204_NO_CONTENT
         )
