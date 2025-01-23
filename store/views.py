@@ -168,22 +168,9 @@ class CollectionList(ListCreateAPIView):
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class CollectionDetail(APIView):
-    def get(self, request, pk):
-        collection = get_object_or_404(
-            Collection.objects.annotate(product_count=Count("product")), id=pk
-        )
-        serializer = CollectionSerializer(collection)
-        return Response(serializer.data)
-
-    def put(self, request, pk):
-        collection = get_object_or_404(
-            Collection.objects.annotate(product_count=Count("product")), id=pk
-        )
-        serializer = CollectionSerializer(collection, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+class CollectionDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Collection.objects.annotate(product_count=Count("product"))
+    serializer_class = CollectionSerializer
 
     def delete(self, delete, pk):
         collection = get_object_or_404(
@@ -198,6 +185,38 @@ class CollectionDetail(APIView):
         return Response(
             {"error": "Collection Deleted"}, status=status.HTTP_204_NO_CONTENT
         )
+
+
+# class CollectionDetail(APIView):
+#     def get(self, request, pk):
+#         collection = get_object_or_404(
+#             Collection.objects.annotate(product_count=Count("product")), id=pk
+#         )
+#         serializer = CollectionSerializer(collection)
+#         return Response(serializer.data)
+
+#     def put(self, request, pk):
+#         collection = get_object_or_404(
+#             Collection.objects.annotate(product_count=Count("product")), id=pk
+#         )
+#         serializer = CollectionSerializer(collection, data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+#     def delete(self, delete, pk):
+#         collection = get_object_or_404(
+#             Collection.objects.annotate(product_count=Count("product")), id=pk
+#         )
+#         if collection.product_set.count() > 0:
+#             return Response(
+#                 {"error": "collection cannot be deleted"},
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
+#         collection.delete()
+#         return Response(
+#             {"error": "Collection Deleted"}, status=status.HTTP_204_NO_CONTENT
+#         )
 
 
 # @api_view(["GET", "PUT", "DELETE"])
