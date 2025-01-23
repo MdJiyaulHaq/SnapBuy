@@ -7,22 +7,46 @@ from .models import Collection, Product
 from django.db.models import Count
 from .serializers import CollectionSerializer, ProductSerializer
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 
 
 # Create your views here.
-class ProductList(APIView):
-    def get(self, request):
-        queryset = Product.objects.select_related("collection").all()
-        serializer = ProductSerializer(queryset, many=True)
-        serializer.data
-        return Response(serializer.data)
+class ProductList(ListCreateAPIView):
+    # using advanced concepts like Mixins
 
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.validated_data
-        serializer.save
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get_queryset(self):
+        return Product.objects.select_related("collection").all()
+
+    def get_serializer_class(self):
+        return ProductSerializer
+
+    def get_serializer_context(self):
+        return super().get_serializer_context()
+
+    # it can be shortened even more because we are not using any special logic
+
+    Product.objects.select_related("collection").all()
+    serializer_class = ProductSerializer
+
+    def get_serializer_context(self):
+        return super().get_serializer_context()
+
+
+# class ProductList(APIView):
+#     def get(self, request):
+#         queryset = Product.objects.select_related("collection").all()
+#         serializer = ProductSerializer(
+#             queryset, many=True, context={"request": request}
+#         )
+#         serializer.data
+#         return Response(serializer.data)
+
+#     def post(self, request):
+#         serializer = ProductSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.validated_data
+#         serializer.save
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # @api_view(["GET", "POST"])
