@@ -117,11 +117,19 @@ class ProductDetail(APIView):
 #         return Response({"error": "Item Deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
-class CollectionList(APIView):
-    def get(self, request):
-        queryset = Collection.objects.annotate(product_count=Count("product")).all()
-        serializer = CollectionSerializer(queryset, many=True)
-        return Response(serializer.data)
+class CollectionList(ListCreateAPIView):
+    queryset = Collection.objects.annotate(product_count=Count("product")).all()
+    serializer_class = CollectionSerializer
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+
+# class CollectionList(APIView):
+#     def get(self, request):
+#         queryset = Collection.objects.annotate(product_count=Count("product")).all()
+#         serializer = CollectionSerializer(queryset, many=True)
+#         return Response(serializer.data)
 
     def post(self, request):
         serializer = CollectionSerializer(data=request.data)
