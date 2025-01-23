@@ -18,7 +18,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_serializer_context(self):
-        return super().get_serializer_context()
+        return {"request": self.request}
 
     def delete(self, request, pk):
         product = get_object_or_404(Product, id=pk)
