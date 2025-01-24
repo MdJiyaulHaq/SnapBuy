@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from store.filters import ProductFilter
+from store.pagination import ProductPagination
 from .models import Collection, Product, OrderItem, Review
 from django.db.models import Count
 from .serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
@@ -28,6 +29,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
+    pagination_class = ProductPagination
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [
