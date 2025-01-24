@@ -4,15 +4,26 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
-from .models import Collection, Product, OrderItem
+from .models import Collection, Product, OrderItem, Review
 from django.db.models import Count
-from .serializers import CollectionSerializer, ProductSerializer
+from .serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
 # Create your views here.
-# Viewsets
+
+
+class ReviewViewSet(ModelViewSet):
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs["product_pk"])
+
+    serializer_class = ReviewSerializer
+
+    def get_serializer_context(self):
+        return {"product_id": self.kwargs["product_pk"]}
+
+
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.select_related("collection").all()
     serializer_class = ProductSerializer
