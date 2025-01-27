@@ -8,14 +8,39 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
-from .models import Collection, Product, OrderItem, Review
+from .models import Collection, Product, OrderItem, Review, Cart, CartItem
 from django.db.models import Count
-from .serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
+from .serializers import (
+    CollectionSerializer,
+    ProductSerializer,
+    ReviewSerializer,
+    CartSerializer,
+    CartItemSerializer,
+)
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.mixins import (
+    CreateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin,
+)
+from rest_framework.viewsets import GenericViewSet
 
 
-# Create your views here.
+class CartViewSet(
+    CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet
+):
+    queryset = Cart.objects.prefetch_related("items__product").all()
+    serializer_class = CartSerializer
+
+
+class CartItemViewSet(ModelViewSet):
+    serializer_class = CartItemSerializer
+
+    def get_queryset(self):
+        return CartItem.objects.select_related("product").filter(
+            cart_id=self.kwargs["cart_pk"]
+        )
 
 
 class ReviewViewSet(ModelViewSet):
