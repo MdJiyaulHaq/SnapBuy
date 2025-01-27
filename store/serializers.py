@@ -9,6 +9,12 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "price"]
 
 
+class UpdateCartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ["quantity"]
+
+
 class AddCartItemSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
 
