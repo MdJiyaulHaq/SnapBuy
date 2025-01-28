@@ -69,12 +69,15 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "email", "membership"]
+    list_display = ["first_name", "last_name", "membership", "orders_count"]
     list_editable = ["membership"]
     list_per_page = 10
-    search_fields = ["first_name__istartswith", "last_name_istartswith"]
-    search_fields = ["first_name", "last_name"]
-    ordering = ["first_name", "last_name"]
+    search_fields = ["first_name__istartswith", "last_name__istartswith"]
+    list_select_related = ["user"]
+    ordering = ["user__first_name", "user__last_name"]
+
+    def orders_count(self, customer):
+        return customer.orders.count()
 
 
 @admin.register(Order)
