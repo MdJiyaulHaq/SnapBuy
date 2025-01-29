@@ -8,10 +8,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
-from .models import Collection, Product, OrderItem, Review, Cart, CartItem
+from .models import Collection, Customer, Product, OrderItem, Review, Cart, CartItem
 from django.db.models import Count
 from .serializers import (
     CollectionSerializer,
+    CustomerSerializer,
     ProductSerializer,
     ReviewSerializer,
     CartSerializer,
@@ -24,6 +25,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.mixins import (
     CreateModelMixin,
     RetrieveModelMixin,
+    UpdateModelMixin,
     DestroyModelMixin,
 )
 from rest_framework.viewsets import GenericViewSet
@@ -349,3 +351,10 @@ class CollectionViewSet(ModelViewSet):
 #         return Response(
 #             {"error": "Collection Deleted"}, status=status.HTTP_204_NO_CONTENT
 #         )
+
+
+class CustomerViewSet(
+    CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet
+):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
