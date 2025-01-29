@@ -19,6 +19,8 @@ platformdirs = "==4.3.6"
 sqlparse = "==0.5.0"
 drf-nested-routers = "*"
 django-filter = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
