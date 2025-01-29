@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
 from .models import Collection, Customer, Product, OrderItem, Review, Cart, CartItem
@@ -354,14 +355,16 @@ class CollectionViewSet(ModelViewSet):
 #         )
 
 
-class CustomerViewSet(
-    CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet
-):
+class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
-    @action(detail=False, methods=["GET", "PUT", "PATCH"])
+    @action(
+        detail=False,
+        methods=["GET", "PUT", "PATCH"],
+        permission_classes=[IsAuthenticated],
+    )
     def me(self, request):
         (customer, created) = Customer.objects.get_or_create(user_id=request.user.id)
         if request.method == "GET":
