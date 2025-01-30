@@ -11,11 +11,22 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from store.permissions import IsAdminOrReadOnly, FullDjangoModelPermission
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
-from .models import Collection, Customer, Product, OrderItem, Review, Cart, CartItem
+from .models import (
+    Collection,
+    Customer,
+    Order,
+    Product,
+    OrderItem,
+    Review,
+    Cart,
+    CartItem,
+)
 from django.db.models import Count
 from .serializers import (
     CollectionSerializer,
+    CreateOrderSerializer,
     CustomerSerializer,
+    OrderSerializer,
     ProductSerializer,
     ReviewSerializer,
     CartSerializer,
@@ -383,3 +394,31 @@ class CustomerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+
+
+class OrderViewSet(ModelViewSet):
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(
+            data=request.data, context={"user_id": self.request.user.id}
+        )
+        serializer.is_valid(raise_exception=True)
+        # order is retured from custom save method in CreateOrderSerializer
+        order = serializer.save()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        (customer_id, created) = Customer.objects.only("id").get_or_create(
+            user_id=user.id
+        )
+        return Order.objects.filter(customer_id=customer_id)

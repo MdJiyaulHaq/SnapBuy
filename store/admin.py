@@ -42,13 +42,14 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = ["collection"]
     list_display = [
         "title",
-        "price",
+        "unit_price",
         "inventory_status",
         "collection_featured_product",
     ]
-    list_editable = ["price"]
+    list_editable = ["unit_price"]
     list_per_page = 10
     search_fields = ["title", "description"]
+    prepopulated_fields = {"slug": ["title"]}
 
     def collection_featured_product(self, product):
         return product.collection.featured_product

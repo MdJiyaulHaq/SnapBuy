@@ -1,12 +1,22 @@
 from decimal import Decimal
+from django.db import transaction
 from rest_framework import serializers
-from .models import Customer, Product, Collection, Review, Cart, CartItem
+from .models import (
+    Customer,
+    Order,
+    OrderItem,
+    Product,
+    Collection,
+    Review,
+    Cart,
+    CartItem,
+)
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["id", "title", "price"]
+        fields = ["id", "title", "unit_price"]
 
 
 class UpdateCartItemSerializer(serializers.ModelSerializer):
@@ -48,7 +58,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, cart_item: CartItem):
-        return cart_item.quantity * cart_item.product.price
+        return cart_item.quantity * cart_item.product.unit_price
 
     class Meta:
         model = CartItem
@@ -94,7 +104,7 @@ class ProductSerializer(serializers.ModelSerializer):
     price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
 
     def calculate_tax(self, product: Product):
-        return product.price * Decimal(1.18)
+        return product.unit_price * Decimal(1.18)
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -113,3 +123,50 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ["id", "user_id", "phone_number", "birth_date", "membership"]
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer()
+
+    class Meta:
+        model = OrderItem
+        fields = ["id", "product", "unit_price", "quantity"]
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ["id", "customer", "Order_placed_at", "payment_status", "items"]
+
+
+class CreateOrderSerializer(serializers.Serializer):
+    cart_id = serializers.UUIDField()
+
+    def save(self, **kwargs):
+        with transaction.atomic():
+            (customer, created) = Customer.objects.get_or_create(
+                user_id=self.context["user_id"]
+            )
+            order = Order.objects.create(customer=customer)
+            cart_id = self.validated_data["cart_id"]
+            cart_items = CartItem.objects.select_related("product").filter(
+                cart_id=cart_id
+            )
+            # List comprehension
+            # [item for item in collection]
+            order_items = [
+                OrderItem(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    unit_price=item.product.unit_price,
+                )
+                for item in cart_items
+            ]
+            # create order_items in bulk
+            OrderItem.objects.bulk_create(order_items)
+            # after the cart items is added to order, cart should be deleted
+            Cart.objects.filter(pk=cart_id).delete()
+            return order
