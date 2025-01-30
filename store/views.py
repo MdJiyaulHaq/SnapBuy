@@ -361,7 +361,7 @@ class CollectionViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [FullDjangoModelPermission]
+    permission_classes = [IsAdminUser]
 
     @action(
         detail=False,
