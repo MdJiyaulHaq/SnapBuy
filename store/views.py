@@ -3,12 +3,12 @@ from django.shortcuts import get_object_or_404, render, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import *
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from store.permissions import IsAdminOrReadOnly
+from store.permissions import IsAdminOrReadOnly, FullDjangoModelPermission
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
 from .models import Collection, Customer, Product, OrderItem, Review, Cart, CartItem
@@ -71,7 +71,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     pagination_class = ProductPagination
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -221,7 +221,7 @@ class ProductViewSet(ModelViewSet):
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(product_count=Count("product"))
     serializer_class = CollectionSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -361,7 +361,7 @@ class CollectionViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [FullDjangoModelPermission]
 
     @action(
         detail=False,
