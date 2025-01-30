@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, action
 from rest_framework import status
 from rest_framework.permissions import *
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -26,6 +27,7 @@ from .serializers import (
     CollectionSerializer,
     CreateOrderSerializer,
     CustomerSerializer,
+    OrderItemSerializer,
     OrderSerializer,
     ProductSerializer,
     ReviewSerializer,
@@ -397,6 +399,13 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
+    http_methods_names = ["get", "patch", "delete", "head", "options"]
+
+    def get_permissions(self):
+        if self.request.method in ["PATCH", "DELETE"]:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
+
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
             data=request.data, context={"user_id": self.request.user.id}
