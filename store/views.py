@@ -400,7 +400,7 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    http_methods_names = ["get", "post" "patch", "delete", "head", "options"]
+    http_methods_names = ["get", "post", "patch", "delete", "head", "options"]
 
     def get_permissions(self):
         if self.request.method in ["PATCH", "DELETE"]:
@@ -423,8 +423,6 @@ class OrderViewSet(ModelViewSet):
         elif self.request.method == "PATCH":
             return UpdateOrderSerializer
         return OrderSerializer
-
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user

@@ -168,7 +168,7 @@ class CreateOrderSerializer(serializers.Serializer):
                 cart_id=cart_id
             )
             # List comprehension
-            # [item for item in collection]
+            # [expression for item in collection]
             order_items = [
                 OrderItem(
                     order=order,
