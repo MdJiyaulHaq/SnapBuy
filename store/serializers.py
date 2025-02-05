@@ -96,7 +96,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "slug",
             "inventory",
-            "price",
+            "unit_price",
             "price_with_tax",
             "collection",
         ]
