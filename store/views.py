@@ -99,7 +99,7 @@ class ProductImageViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     pagination_class = ProductPagination
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related("images").all()
     serializer_class = ProductSerializer
     filter_backends = [
         DjangoFilterBackend,
