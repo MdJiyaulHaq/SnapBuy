@@ -8,6 +8,9 @@ class Tag(models.Model):
     # Label of the tag
     label = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.label
+
 
 # Define a TaggedItem model to associate tags with any model instance
 class TaggedItem(models.Model):

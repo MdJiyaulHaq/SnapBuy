@@ -5,6 +5,9 @@ from store import models
 from django.db.models import Count
 from django.utils.html import format_html, urlencode
 
+from tags.models import TaggedItem
+from django.contrib.contenttypes.admin import GenericTabularInline
+
 
 # Register your models here.
 @admin.register(Promotion)
@@ -35,10 +38,17 @@ class CollectionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(product_count=Count("product"))
 
 
+class TagInline(GenericTabularInline):
+    model = TaggedItem
+    autocomplete_fields = ["tag"]
+    extra = 1
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ["collection"]
     actions = ["clear_inventory"]
+    inlines = [TagInline]
     list_select_related = ["collection"]
     list_display = [
         "title",
