@@ -81,8 +81,15 @@ class CustomerAdmin(admin.ModelAdmin):
         return customer.orders.count()
 
 
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem
+    autocomplete_fields = ["product"]
+    extra = 1
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
     autocomplete_fields = ["customer"]
     list_select_related = ["customer"]
     list_display = ["id", "Order_placed_at", "customer_name"]
