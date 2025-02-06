@@ -28,7 +28,7 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from="title")
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
     unit_price = models.DecimalField(
         max_digits=6, decimal_places=2, validators=[MinValueValidator(1)]
