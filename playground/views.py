@@ -1,4 +1,4 @@
-from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
+from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError, from templated_mail.mail import BaseEmailMessage
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
@@ -31,6 +31,16 @@ def say_hello(request):
         )
         msg.attach_file("playground/static/images/Md.jpg")
         msg.send()
+        # if you want to send templated_emails
+        message = BaseEmailMessage(
+            template_name="emails/hello2.html", context={"name": "Shankar"}
+        )
+        message.send(["to@storefront.com"])
+        return render(
+            request,
+            "hello.html",
+            {"message": "Email sent successfully!", "name": "Shankar"},
+        )
         return render(request, "hello.html", {"message": "Email sent successfully!"})
     except BadHeaderError:
         return render(request, "hello.html", {"message": "Invalid header found."})
