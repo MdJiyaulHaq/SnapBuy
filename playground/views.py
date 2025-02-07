@@ -1,4 +1,5 @@
-from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError, from templated_mail.mail import BaseEmailMessage
+from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
+from templated_mail.mail import BaseEmailMessage
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
