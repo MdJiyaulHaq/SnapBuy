@@ -167,16 +167,25 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "core.User"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "localhost"
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 8025
 DEFAULT_EMAIL_FROM = "from@storefront.com"
 
-ADMINS = [
-    ("Md", "md@storefront.com"),
-    ("admin", "admin@storefront.com")
-]
+ADMINS = [("Md", "md@storefront.com"), ("admin", "admin@storefront.com")]
 
-CELERY_BROKER_URL = 'redis://localhost:6379/1'
+from celery.schedules import crontab
+
+CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_BEAT_SCHEDULE = {
+    "monthly_report": {
+        "task": "playground.tasks.monthly_report",
+        "schedule": 5,  # for testing,
+        # "schedule": crontab(day_of_month=1, hour= 4, minute=30),
+        # optionally we can have args and kwargs
+        "args": ["Your monthly report is being generated"],
+        # "kwargs": {"name": "Shankar", "age": "22"},
+    }
+}

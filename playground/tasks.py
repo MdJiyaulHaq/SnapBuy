@@ -9,3 +9,8 @@ def notify_customers(message):
     print(message)
     sleep(10) # simulating a long-running task
     print("video is ready")
+
+
+@shared_task
+def monthly_report(message):
+    print(message)
