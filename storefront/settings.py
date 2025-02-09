@@ -178,3 +178,5 @@ ADMINS = [
     ("Md", "md@storefront.com"),
     ("admin", "admin@storefront.com")
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
