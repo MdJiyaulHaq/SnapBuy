@@ -1,7 +1,9 @@
+from store.models import Collection, Product
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient
 import pytest
+from model_bakery import baker
 
 
 @pytest.mark.django_db
@@ -26,3 +28,19 @@ class TestCreateCollection:
         response = api_client.post("/store/collections/", {"title": "a"})
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["id"] > 0
+
+
+@pytest.mark.django_db
+class TestRetriveCollection:
+    def test_if_collection_exits_returns_200(self, api_client):
+        collection = baker.make(Collection)
+        # Model baker takes care of relationships as well
+        baker.make(Product, collection=collection, _quantity=5)
+        # this will create one collection with 5 products
+        response = api_client.get(f"/store/collections/{collection.id}/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data == {
+            "id": collection.id,
+            "title": collection.title,
+            "product_count": 0,
+        }
