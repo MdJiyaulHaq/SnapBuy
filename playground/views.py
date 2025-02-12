@@ -4,12 +4,25 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from .tasks import notify_customers
+import requests
+from django.core.cache import cache
 
 
 # Create your views here.
 def say_hello(request):
-    notify_customers.delay("Your video is being processed")
-    return render(request, "hello.html", {"name": "Shankar"})
+    key = "httpbin_result"  # Key name can be anything you want
+    if cache.get(key) is None:
+        response = requests.get(
+            "https://httpbin.org/delay/3"
+        )  # simulates slow 3rd party service or api
+        data = response.json()
+        cache.set(key, data)
+    return render(request, "hello.html", {"name": cache.get(key)})
+
+
+# def say_hello(request):
+#     notify_customers.delay("Your video is being processed")
+#     return render(request, "hello.html", {"name": "Shankar"})
 
 
 # def say_hello(request):
