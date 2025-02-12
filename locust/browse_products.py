@@ -9,18 +9,18 @@ class WebsiteUser(HttpUser):
     def view_products(self):
         collection_id = randint(1, 11)
         self.client.get(
-            f"/store/products/?collection_id={collection_id}/",
+            f"/store/products/?collection_id={collection_id}",
             name="/store/products/",
         )
 
-    @task(5)
+    @task(10)
     def view_product(self):
-        product_id = randint(1, 1000)
-        self.client.get(f"/store/products/{product_id}/", name="/store/product/:id")
+        product_id = randint(1, 111)
+        self.client.get(f"/store/products/{product_id}", name="/store/product/:id")
 
     @task(1)
     def add_to_cart(self):
-        product_id = randint(1, 11)
+        product_id = randint(1, 111)
         self.client.post(
             f"/store/carts/{self.cart_id}/items",
             name="/store/carts/items",
@@ -28,6 +28,6 @@ class WebsiteUser(HttpUser):
         )
 
     def on_start(self):
-        response = self.client.get("/store/carts/")
+        response = self.client.post("/store/carts/")
         result = response.json()
         self.cart_id = result["id"]
