@@ -64,7 +64,7 @@ MIDDLEWARE = [
 
 # if DEBUG:
 #     MIDDLEWARE +=[
-#        'silk.middleware.SilkyMiddleware' 
+#        'silk.middleware.SilkyMiddleware'
 #     ]
 
 INTERNAL_IPS = [
@@ -205,6 +205,35 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
+}
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{asctime} ({levelname}) - {name} - {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",  # Added formatter
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "general.log",
+            "formatter": "verbose",  # Added formatter
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console", "file"],
+            "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO"),
+        }
+    },
 }

@@ -2,3 +2,5 @@
 *.pyc
 /media/
 /static/
+general.log
+celerybeat-schedule.db
