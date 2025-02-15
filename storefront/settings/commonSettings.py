@@ -163,18 +163,10 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "core.User"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "localhost"
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_PORT = 8025
-DEFAULT_EMAIL_FROM = "from@storefront.com"
-
 ADMINS = [("Md", "md@storefront.com"), ("admin", "admin@storefront.com")]
 
 from celery.schedules import crontab
 
-CELERY_BROKER_URL = "redis://localhost:6379/1"
 CELERY_BEAT_SCHEDULE = {
     "monthly_report": {
         "task": "playground.tasks.monthly_report",
@@ -186,15 +178,6 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
 
 
 LOGGING = {
