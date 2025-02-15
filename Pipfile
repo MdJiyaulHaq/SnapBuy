@@ -31,7 +31,7 @@ whitenoise = "*"
 gunicorn = "*"
 dj-database-url = "*"
 django-silk = "*"
-mysqlclient-binary==2.2.7
+psycopg2-binary==2.9.9
 
 [dev-packages]
 pytest = "*"
