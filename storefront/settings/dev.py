@@ -7,9 +7,10 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "storefront",
         "HOST": "localhost",
+        "PORT": '5432',
         "USER": "root",
         "PASSWORD": "bismillah",
     }
