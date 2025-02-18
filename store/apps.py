@@ -6,4 +6,4 @@ class StoreConfig(AppConfig):
     name = "store"
     #override this method and import signal
     def ready(self):
-        import store.signals
+        import store.signals.handlers
