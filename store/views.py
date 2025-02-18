@@ -97,7 +97,7 @@ class ProductImageViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
     queryset = Product.objects.prefetch_related("images").all()
     serializer_class = ProductSerializer
@@ -247,7 +247,7 @@ class ProductViewSet(ModelViewSet):
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(product_count=Count("product"))
     serializer_class = CollectionSerializer
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -388,6 +388,11 @@ class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = [IsAdminUser]
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     @action(
         detail=False,
