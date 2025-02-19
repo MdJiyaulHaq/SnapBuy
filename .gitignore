@@ -4,3 +4,7 @@
 /static/
 general.log
 celerybeat-schedule.db
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
