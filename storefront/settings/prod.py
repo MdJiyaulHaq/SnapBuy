@@ -1,4 +1,4 @@
-from .commonSettings import *
+from .common import *
 import dj_database_url
 import os
 
@@ -8,9 +8,7 @@ DEBUG = False
 
 
 ALLOWED_HOSTS = ["snapbuy.up.railway.app"]
-CSRF_TRUSTED_ORIGINS = [
-    'https://snapbuy.up.railway.app'
-]
+CSRF_TRUSTED_ORIGINS = ["https://snapbuy.up.railway.app"]
 
 DATABASES = {"default": dj_database_url.config()}
 
@@ -29,10 +27,7 @@ CACHES = {
 }
 
 
-
-EMAIL_HOST = "localhost"
+EMAIL_HOST = os.environ
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
-EMAIL_PORT = 8025
-DEFAULT_EMAIL_FROM = "from@storefront.com"
-
+EMAIL_PORT = ""

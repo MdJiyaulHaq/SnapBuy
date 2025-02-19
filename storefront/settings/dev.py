@@ -1,4 +1,4 @@
-from .commonSettings import *
+from .common import *
 
 SECRET_KEY = "django-insecure-br7kulf_jaeaq*6de!%yzr1n(q=zucl)^(1kl=m8c#b5!t$w69"
 
@@ -10,7 +10,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "storefront",
         "HOST": "localhost",
-        "PORT": '5432',
+        "PORT": "5432",
         "USER": "root",
         "PASSWORD": "bismillah",
     }

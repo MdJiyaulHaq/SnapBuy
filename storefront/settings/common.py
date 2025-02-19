@@ -26,7 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -177,7 +176,6 @@ CELERY_BEAT_SCHEDULE = {
         # "kwargs": {"name": "Shankar", "age": "22"},
     }
 }
-
 
 
 LOGGING = {
