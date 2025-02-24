@@ -2,9 +2,9 @@ from .common import *
 import dj_database_url
 import os
 
-SECRET_KEY = os.environ["SECRET_KEY"]
-
 DEBUG = False
+
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 ALLOWED_HOSTS = ["snapbuy.up.railway.app"]

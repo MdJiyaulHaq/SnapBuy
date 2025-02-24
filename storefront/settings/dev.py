@@ -16,9 +16,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "djoser",
-    "silk",
     "playground",
-    "debug_toolbar",
     "store",
     "tags",
     "core",
@@ -28,6 +26,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "silk.middleware.SilkyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
