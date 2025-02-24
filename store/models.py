@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib import admin
-from autoslug import AutoSlugField
 from django.core.validators import *
 from django.conf import settings
 from uuid import uuid4
