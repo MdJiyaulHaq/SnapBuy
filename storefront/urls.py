@@ -24,10 +24,8 @@ from django.urls import include, path
 admin.site.site_header = "Storefront Admin"
 admin.site.site_title = "Admin"
 admin.site.index_title = "Admin Portal"
-def health_check(request):
-    return HttpResponse("OK")
+
 urlpatterns = [
-    path("health/", health_check),
     path("", include("core.urls")),
     path("playground/", include("playground.urls")),
     path("admin/", admin.site.urls),

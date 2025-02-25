@@ -8,12 +8,12 @@ DEBUG = False
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-
-ALLOWED_HOSTS = [
-    "snapbuy.up.railway.app",
-    "0.0.0.0",
-    "localhost",
-]
+ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = [
+#     "snapbuy.up.railway.app",
+#     "0.0.0.0",
+#     "localhost",
+# ]
 CSRF_TRUSTED_ORIGINS = ["https://snapbuy.up.railway.app"]
 
 DATABASES = {"default": dj_database_url.config()}
