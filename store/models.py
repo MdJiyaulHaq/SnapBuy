@@ -1,8 +1,9 @@
-from django.db import models
+from uuid import uuid4
+
+from django.conf import settings
 from django.contrib import admin
 from django.core.validators import *
-from django.conf import settings
-from uuid import uuid4
+from django.db import models
 
 from store.validators import validate_image_size
 

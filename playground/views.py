@@ -1,15 +1,18 @@
-from django.core.mail import send_mail, mail_admins, EmailMessage, BadHeaderError
-from templated_mail.mail import BaseEmailMessage
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
-from .tasks import notify_customers
+import logging
+
 import requests
+from django.conf import settings
 from django.core.cache import cache
+from django.core.mail import (BadHeaderError, EmailMessage, mail_admins,
+                              send_mail)
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.views import APIView
-from django.utils.decorators import method_decorator
-import logging
+from templated_mail.mail import BaseEmailMessage
+
+from .tasks import notify_customers
 
 logger = logging.getLogger(__name__)
 

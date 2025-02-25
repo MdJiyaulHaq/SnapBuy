@@ -1,9 +1,10 @@
-from store.models import Collection, Product
+import pytest
 from django.contrib.auth.models import User
+from model_bakery import baker
 from rest_framework import status
 from rest_framework.test import APIClient
-import pytest
-from model_bakery import baker
+
+from store.models import Collection, Product
 
 
 @pytest.mark.django_db

@@ -1,6 +1,8 @@
-from .common import *
-import dj_database_url
 import os
+
+import dj_database_url
+
+from .common import *
 
 DEBUG = False
 

@@ -3,10 +3,11 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.utils.html import format_html
 
-from store.models import Product
-from .models import User
 from store.admin import ProductAdmin, ProductImageInline
+from store.models import Product
 from tags.models import TaggedItem
+
+from .models import User
 
 
 class TagInline(GenericTabularInline):

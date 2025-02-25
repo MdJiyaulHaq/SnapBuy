@@ -1,53 +1,34 @@
+from django.db.models import Count
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render, get_list_or_404
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, action
-from rest_framework import status
-from rest_framework.permissions import *
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.viewsets import ModelViewSet
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import status
+from rest_framework.decorators import action, api_view
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.generics import (ListCreateAPIView,
+                                     RetrieveUpdateDestroyAPIView)
+from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
+                                   RetrieveModelMixin, UpdateModelMixin)
+from rest_framework.permissions import *
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from store.permissions import IsAdminOrReadOnly, FullDjangoModelPermission
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+
 from store.filters import ProductFilter
 from store.pagination import ProductPagination
-from .models import (
-    Collection,
-    Customer,
-    Order,
-    Product,
-    OrderItem,
-    ProductImage,
-    Review,
-    Cart,
-    CartItem,
-)
-from django.db.models import Count
-from .serializers import (
-    CollectionSerializer,
-    CreateOrderSerializer,
-    CustomerSerializer,
-    OrderItemSerializer,
-    OrderSerializer,
-    ProductImageSerializer,
-    ProductSerializer,
-    ReviewSerializer,
-    CartSerializer,
-    CartItemSerializer,
-    AddCartItemSerializer,
-    UpdateCartItemSerializer,
-    UpdateOrderSerializer,
-)
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.mixins import (
-    CreateModelMixin,
-    RetrieveModelMixin,
-    UpdateModelMixin,
-    DestroyModelMixin,
-)
-from rest_framework.viewsets import GenericViewSet
+from store.permissions import FullDjangoModelPermission, IsAdminOrReadOnly
+
+from .models import (Cart, CartItem, Collection, Customer, Order, OrderItem,
+                     Product, ProductImage, Review)
+from .serializers import (AddCartItemSerializer, CartItemSerializer,
+                          CartSerializer, CollectionSerializer,
+                          CreateOrderSerializer, CustomerSerializer,
+                          OrderItemSerializer, OrderSerializer,
+                          ProductImageSerializer, ProductSerializer,
+                          ReviewSerializer, UpdateCartItemSerializer,
+                          UpdateOrderSerializer)
 
 
 class CartViewSet(
