@@ -20,7 +20,7 @@ build/
 *.pyc
 db.sqlite3
 media/
-static/
+staticfiles/
 local_settings.py
 
 # IDE specific files
