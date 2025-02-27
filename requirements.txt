@@ -60,3 +60,10 @@ prometheus-client==0.12.0
 
 # Server and Deployment
 gunicorn==20.1.0
+
+# Code Formatting and Linting
+autopep8==1.6.0
+pycodestyle==2.8.0
+
+#others
+toml==0.10.2
