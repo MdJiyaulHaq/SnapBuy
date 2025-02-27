@@ -55,7 +55,7 @@ locust==2.33.0
 MarkupSafe==3.0.2
 model-bakery==1.20.4
 msgpack==1.1.0
-mysqlclient==2.2.7
+#mysqlclient==2.2.7
 oauthlib==3.2.2
 packaging==24.2
 pillow==11.1.0
