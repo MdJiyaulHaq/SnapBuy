@@ -1,131 +1,127 @@
 # Django and Core Frameworks
-django==3.2.9
-djangorestframework==3.12.4
-django-cors-headers==3.10.0
-django-redis==5.0.0
-django-templated-mail==1.1.1
-djoser==2.1.0
-djangorestframework-simplejwt==4.8.0
-drf-nested-routers==0.93.4
-whitenoise==5.3.0
+django
+djangorestframework
+django-cors-headers
+django-redis
+django-templated-mail
+djoser
+djangorestframework-simplejwt
+drf-nested-routers
+whitenoise
 
 # Database and ORM
-dj-database-url==0.5.0
-sqlparse==0.4.2
+dj-database-url
+sqlparse
 
 # Asynchronous Task Queue (Celery)
-celery==5.2.1
-amqp==5.0.6
-billiard==3.6.4.0
-kombu==5.2.2
-vine==5.0.0
-redis==4.0.2
+celery
+amqp
+billiard
+kombu
+vine
+redis
 
 # Authentication and Security
-pyjwt==2.3.0
-oauthlib==3.1.1
-requests-oauthlib==1.3.0
-social-auth-app-django==4.0.0
-social-auth-core==4.1.0
-defusedxml==0.7.1
-cryptography==36.0.0
-python3-openid==3.2.0
+pyjwt
+oauthlib
+requests-oauthlib
+social-auth-app-django
+social-auth-core
+defusedxml
+cryptography
+python3-openid
 
 # API and HTTP Clients
-requests==2.26.0
-urllib3==1.26.7
-coreapi==2.3.3
-coreschema==0.0.4
-uritemplate==4.1.1
+requests
+urllib3
+coreapi
+coreschema
+uritemplate
 
 # Utilities and Helpers
-asgiref==3.4.1
-humanize==3.12.0
-pytz==2021.3
-six==1.16.0
-attrs==21.2.0
-packaging==21.3
-pyparsing==3.0.6
-deprecated==1.2.13
-typing-extensions==4.0.0
+asgiref
+humanize
+pytz
+six
+attrs
+packaging
+pyparsing
+deprecated
+typing-extensions
 
 # File Handling and Encoding
-pillow==8.4.0
-brotli==1.0.9
-charset-normalizer==2.0.7
-msgpack==1.0.3
+pillow
+brotli
+charset-normalizer
+msgpack
 
 # Monitoring and Metrics
-prometheus-client==0.12.0
+prometheus-client
 
 # Server and Deployment
-gunicorn==20.1.0
+gunicorn
 
 # Code Formatting and Linting
-autopep8==1.6.0
-pycodestyle==2.8.0
-
-#others
-toml==0.10.2
-
+autopep8
+pycodestyle
 
 # Testing Frameworks
-pytest==6.2.5
-pytest-django==4.4.0
-pytest-watch==4.2.0
-locust==2.5.0
-model-bakery==1.3.3
+pytest
+pytest-django
+pytest-watch
+locust
+model-bakery
 
 # Debugging Tools
-django-debug-toolbar==3.2.2
-django-silk==4.2.0
-flower==1.0.0
+django-debug-toolbar
+django-silk
+flower
 
 # Profiling and Performance
-gprof2dot==2021.2.21
-psutil==5.8.0
-pyzmq==22.3.0
+gprof2dot
+psutil
+pyzmq
 
 # Command-Line Tools
-click==8.0.3
-click-didyoumean==0.3.0
-click-plugins==1.1.1
-click-repl==0.2.0
-prompt-toolkit==3.0.22
-docopt==0.6.2
-configargparse==1.5.3
-
+click
+click-didyoumean
+click-plugins
+click-repl
+prompt-toolkit
+docopt
+configargparse
 
 # Flask (Optional Development Framework)
-flask==2.0.2
-flask-basicauth==0.2.0
-flask-cors==3.0.10
-werkzeug==2.0.2
+flask
+flask-basicauth
+flask-cors
+werkzeug
 
 # Asynchronous Networking (Optional Development Tools)
-gevent==21.8.0
-geventhttpclient==1.5.3
-greenlet==1.1.2
-zope.event==4.5.0
-zope.interface==5.4.0
+gevent
+geventhttpclient
+greenlet
+zope.event
+zope.interface
 
 # File System Monitoring
-watchdog==2.1.6
+watchdog
 
 # Syntax Highlighting and Visualization
-pygments==2.10.0
-jinja2==3.0.3
-markupsafe==2.0.1
-wcwidth==0.2.5
+pygments
+jinja2
+markupsafe
+wcwidth
 
 # Miscellaneous Development Tools
-iniconfig==1.1.1
-itsdangerous==2.0.1
-pluggy==1.0.0
-roundrobin==0.0.2
-colorama==0.4.4
-cffi==1.15.0
-certifi==2021.10.8
-idna==3.3
-itypes==1.2.0
-tornado==6.1
+iniconfig
+itsdangerous
+pluggy
+roundrobin
+colorama
+cffi
+certifi
+idna
+itypes
+tornado
+toml
