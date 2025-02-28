@@ -100,12 +100,7 @@ class ProductImageViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
-    queryset = (
-        Product.objects.values("id", "name", "price")
-        .order_by("-created_at")
-        .prefetch_related("images")
-        .all()
-    )
+    queryset = Product.objects.order_by("-last_update").prefetch_related("images").all()
     serializer_class = ProductSerializer
     filter_backends = [
         DjangoFilterBackend,
