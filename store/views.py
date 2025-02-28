@@ -6,10 +6,13 @@ from rest_framework import status
 from rest_framework.decorators import action, api_view
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.generics import (ListCreateAPIView,
-                                     RetrieveUpdateDestroyAPIView)
-from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
-                                   RetrieveModelMixin, UpdateModelMixin)
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+)
 from rest_framework.permissions import *
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -20,15 +23,32 @@ from store.filters import ProductFilter
 from store.pagination import ProductPagination
 from store.permissions import FullDjangoModelPermission, IsAdminOrReadOnly
 
-from .models import (Cart, CartItem, Collection, Customer, Order, OrderItem,
-                     Product, ProductImage, Review)
-from .serializers import (AddCartItemSerializer, CartItemSerializer,
-                          CartSerializer, CollectionSerializer,
-                          CreateOrderSerializer, CustomerSerializer,
-                          OrderItemSerializer, OrderSerializer,
-                          ProductImageSerializer, ProductSerializer,
-                          ReviewSerializer, UpdateCartItemSerializer,
-                          UpdateOrderSerializer)
+from .models import (
+    Cart,
+    CartItem,
+    Collection,
+    Customer,
+    Order,
+    OrderItem,
+    Product,
+    ProductImage,
+    Review,
+)
+from .serializers import (
+    AddCartItemSerializer,
+    CartItemSerializer,
+    CartSerializer,
+    CollectionSerializer,
+    CreateOrderSerializer,
+    CustomerSerializer,
+    OrderItemSerializer,
+    OrderSerializer,
+    ProductImageSerializer,
+    ProductSerializer,
+    ReviewSerializer,
+    UpdateCartItemSerializer,
+    UpdateOrderSerializer,
+)
 
 
 class CartViewSet(
@@ -80,7 +100,12 @@ class ProductImageViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
-    queryset = Product.objects.prefetch_related("images").all()
+    queryset = (
+        Product.objects.values("id", "name", "price")
+        .order_by("-created_at")
+        .prefetch_related("images")
+        .all()
+    )
     serializer_class = ProductSerializer
     filter_backends = [
         DjangoFilterBackend,
