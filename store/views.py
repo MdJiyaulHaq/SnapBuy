@@ -54,11 +54,13 @@ from .serializers import (
 class CartViewSet(
     CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet
 ):
+    lookup_field = "id"
     queryset = Cart.objects.prefetch_related("items__product").all()
     serializer_class = CartSerializer
 
 
 class CartItemViewSet(ModelViewSet):
+    lookup_field = "id"
     http_method_names = ["get", "post", "patch", "delete"]
 
     def get_serializer_class(self):
@@ -78,6 +80,8 @@ class CartItemViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
+    lookup_field = "id"
+
     def get_queryset(self):
         return Review.objects.filter(product_id=self.kwargs["product_pk"])
 
@@ -91,13 +95,17 @@ class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
 
     def get_queryset(self):
-        return ProductImage.objects.filter(product_id=self.kwargs["product_pk"])
+        product_pk = self.kwargs.get("product_pk")
+        if product_pk is None:
+            return ProductImage.objects.none()
+        return ProductImage.objects.filter(product_id=product_pk)
 
     def get_serializer_context(self):
         return {"product_id": self.kwargs["product_pk"]}
 
 
 class ProductViewSet(ModelViewSet):
+    lookup_field = "id"
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
     queryset = Product.objects.order_by("-last_update").prefetch_related("images").all()
@@ -446,5 +454,8 @@ class OrderViewSet(ModelViewSet):
         user = self.request.user
         if user.is_staff:
             return Order.objects.all()
-        customer_id = Customer.objects.only("id").get(user_id=user.id)
-        return Order.objects.filter(customer_id=customer_id)
+
+        customer = Customer.objects.only("id").filter(user_id=user.id).first()
+        if not customer:
+            return Order.objects.none()
+        return Order.objects.filter(customer_id=customer.id)

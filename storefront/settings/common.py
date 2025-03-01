@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_filters",
     "rest_framework",
+    "drf_yasg",
     "djoser",
     "playground",
     "store",
@@ -162,8 +163,8 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     "monthly_report": {
         "task": "playground.tasks.monthly_report",
-        #"schedule": 5,  # for testing,
-        "schedule": crontab(day_of_month=1, hour= 4, minute=30),
+        # "schedule": 5,  # for testing,
+        "schedule": crontab(day_of_month=1, hour=4, minute=30),
         # optionally we can have args and kwargs
         "args": ["Your monthly report is being generated"],
         # "kwargs": {"name": "Shankar", "age": "22"},
