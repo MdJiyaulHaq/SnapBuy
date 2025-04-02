@@ -158,7 +158,7 @@ AUTH_USER_MODEL = "core.User"
 
 ADMINS = [("Md", "md@storefront.com"), ("admin", "admin@storefront.com")]
 
-from celery.schedules import crontab
+from celery.schedules import crontab  # Ensure this import is present
 
 CELERY_BEAT_SCHEDULE = {
     "monthly_report": {
