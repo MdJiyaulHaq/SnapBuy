@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             """
             INSERT INTO store_collection (title)
-            VALUES ("COLLECTION 1")
+            VALUES ('COLLECTION 1')
             """,
             """
             DELETE FROM store_collection 
-            WHERE title = "COLLECTION 1"
+            WHERE title = 'COLLECTION 1'
              """
         )
     ]
