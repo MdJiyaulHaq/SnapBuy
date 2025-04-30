@@ -12,11 +12,17 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name="cart",
-            name="id",
-            field=models.UUIDField(
-                default=uuid.uuid4, primary_key=True, serialize=False
-            ),
+        migrations.AddField(
+            model_name='cart',
+            name='uuid',
+            field=models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=True),
         ),
+        migrations.RunPython(
+            code=lambda apps, schema_editor: [
+                setattr(cart, 'uuid', uuid.uuid4()) or cart.save()
+                for cart in apps.get_model('store', 'Cart').objects.filter(uuid__isnull=True)
+            ],
+            reverse_code=migrations.RunPython.noop,
+        ),
+        # Skipped altering 'id' field to UUID in production. Handled manually or ignored.
     ]
