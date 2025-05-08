@@ -105,7 +105,7 @@ class ProductImageViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    throttle_scope = 'products'
+    throttle_scope = "products"
     lookup_field = "id"
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
@@ -118,7 +118,7 @@ class ProductViewSet(ModelViewSet):
     ]
     filterset_class = ProductFilter
     search_fields = ["title", "description"]
-    ordering_fields = ["price", "last_update"]
+    ordering_fields = ["unit_price", "last_update", "title"]
 
     def get_serializer_context(self):
         return {"request": self.request}

@@ -10,12 +10,11 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = [
     "snapbuy.up.railway.app",
-    "0.0.0.0",
-    "localhost",
 ]
-CSRF_TRUSTED_ORIGINS = ["https://snapbuy.up.railway.app"]
 
 DATABASES = {"default": dj_database_url.config()}
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 REDIS_URL = os.environ["REDIS_URL"]
 
@@ -36,3 +35,8 @@ EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
+
+
+CORS_ALLOWED_ORIGINS = ["https://snapbuy.up.railway.app"]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ["https://snapbuy.up.railway.app"]

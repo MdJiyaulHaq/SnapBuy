@@ -3,8 +3,17 @@ from decimal import Decimal
 from django.db import transaction
 from rest_framework import serializers
 
-from .models import (Cart, CartItem, Collection, Customer, Order, OrderItem,
-                     Product, ProductImage, Review)
+from .models import (
+    Cart,
+    CartItem,
+    Collection,
+    Customer,
+    Order,
+    OrderItem,
+    Product,
+    ProductImage,
+    Review,
+)
 from .signals import order_created
 
 
@@ -76,9 +85,10 @@ class CartSerializer(serializers.ModelSerializer):
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ["id", "title", "product_count"]
+        fields = ["id", "title", "product_count", "featured_product"]
 
     product_count = serializers.IntegerField(read_only=True)
+    featured_product = serializers.PrimaryKeyRelatedField(read_only=True)
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

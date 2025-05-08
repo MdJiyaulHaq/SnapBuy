@@ -22,6 +22,7 @@ class CollectionAdmin(admin.ModelAdmin):
     list_display = ["title", "featured_product", "product_count"]
     list_per_page = 10
     search_fields = ["title"]
+    autocomplete_fields = ["featured_product"]
 
     @admin.display(description="Product Count")
     def product_count(self, collection):
