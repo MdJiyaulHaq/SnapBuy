@@ -122,3 +122,29 @@ export const getCollection = async (id: number) => {
     throw error;
   }
 };
+
+export const getCollectionDetails = async (id: string) => {
+  try {
+    console.log("Fetching collection details:", id);
+    const [collection, products] = await Promise.all([
+      api.get<Collection>(`/store/collections/${id}/`),
+      api.get<ProductsResponse>("/store/products/", {
+        params: {
+          collection_id: id,
+        },
+      }),
+    ]);
+
+    return {
+      collection: collection.data,
+      products: products.data.results || [],
+      totalProducts: products.data.count || 0,
+    };
+  } catch (error: any) {
+    console.error(
+      "Error fetching collection details:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
