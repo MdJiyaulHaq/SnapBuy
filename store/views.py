@@ -105,7 +105,7 @@ class ProductImageViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    throttle_scope = "products"
+    # throttle_scope = "products"
     lookup_field = "id"
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = ProductPagination
