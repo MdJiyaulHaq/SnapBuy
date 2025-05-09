@@ -12,7 +12,14 @@ ALLOWED_HOSTS = [
     "snapbuy.up.railway.app",
 ]
 
-DATABASES = {"default": dj_database_url.config()}
+DATABASES = {
+    "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3",  # Fallback to SQLite during build
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=False,  # Will be overridden by DATABASE_URL in production
+    )
+}
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
