@@ -23,10 +23,20 @@ from django.urls import include, path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+import os
 
 admin.site.site_header = "Storefront Admin"
 admin.site.site_title = "Admin"
 admin.site.index_title = "Admin Portal"
+
+
+# Serve index.html for all frontend routes
+def serve_spa(request):
+    return HttpResponse(
+        open(os.path.join(settings.STATICFILES_DIRS[0], "index.html")).read(),
+        content_type="text/html",
+    )
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -42,22 +52,30 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path("", include("core.urls")),
-    path("playground/", include("playground.urls")),
-    path("admin/", admin.site.urls),
-    path("auth/", include("djoser.urls")),
-    path("auth/", include("djoser.urls.jwt")),
-    path("store/", include("store.urls")),
-
+    # API endpoints
+    path("api/", include("core.urls")),
+    path("api/playground/", include("playground.urls")),
+    path("api/admin/", admin.site.urls),
+    path("api/auth/", include("djoser.urls")),
+    path("api/auth/", include("djoser.urls.jwt")),
+    path("api/store/", include("store.urls")),
+    # API documentation
     path(
-        "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
+        "api/swagger<format>/",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
     ),
     path(
-        "swagger/",
+        "api/swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path(
+        "api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
+    ),
+    # Serve frontend for all other routes
+    path("", serve_spa),
+    path("<path:path>", serve_spa),
 ]
 
 if settings.DEBUG:

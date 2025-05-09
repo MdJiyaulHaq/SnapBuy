@@ -82,7 +82,7 @@ node_modules/
 *.pyo
 *.pyd
 .Python
-railway.json
+# railway.json
 
 # Ignore development requirements
 requirements_dev.txt
