@@ -46,7 +46,7 @@ urlpatterns = [
     path("playground/", include("playground.urls")),
     path("admin/", admin.site.urls),
     path("auth/", include("djoser.urls")),
-    path("auth/jwt/", include("djoser.urls.jwt")),
+    path("auth/", include("djoser.urls.jwt")),
     path("store/", include("store.urls")),
 
     path(

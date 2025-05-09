@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
-import { getToken, clearTokens } from '../utils/auth';
+import axios, { AxiosInstance } from "axios";
+import { getToken, clearTokens } from "../utils/auth";
 
 // Use environment variable with fallback for the backend URL
 const BACKEND_URL =
@@ -9,7 +9,7 @@ const BACKEND_URL =
 const api: AxiosInstance = axios.create({
   baseURL: BACKEND_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   // Add timeout to prevent hanging requests
   timeout: 10000,
@@ -20,12 +20,12 @@ api.interceptors.request.use(
   (config) => {
     const token = getToken();
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `JWT ${token}`;
     }
     return config;
   },
   (error) => {
-    console.error('Request error:', error);
+    console.error("Request error:", error);
     return Promise.reject(error);
   }
 );
@@ -34,12 +34,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('Response error:', error.response?.data || error.message);
-    
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    console.error("Response error:", error.response?.data || error.message);
+
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Token expired or invalid
       clearTokens();
-      window.location.href = '/login';
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
