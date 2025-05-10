@@ -10,6 +10,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = [
     "snapbuy.up.railway.app",
+    ".railway.app",  # Allow all Railway subdomains
 ]
 
 DATABASES = {
@@ -44,6 +45,16 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
 
-CORS_ALLOWED_ORIGINS = ["https://snapbuy.up.railway.app"]
+CORS_ALLOWED_ORIGINS = [
+    "https://snapbuy.up.railway.app",
+    "https://snapbuy-frontend.up.railway.app",  # Add your frontend domain
+    "http://localhost:5173",  # For local development
+]
+
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ["https://snapbuy.up.railway.app"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://snapbuy.up.railway.app",
+    "https://snapbuy-frontend.up.railway.app",  # Add your frontend domain
+    "http://localhost:5173",  # For local development
+]
