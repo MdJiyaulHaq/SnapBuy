@@ -19,7 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.generic import TemplateView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -74,6 +75,7 @@ urlpatterns = [
         "api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
     # Serve frontend for all other routes
+    re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
     path("", serve_spa),
     path("<path:path>", serve_spa),
 ]
