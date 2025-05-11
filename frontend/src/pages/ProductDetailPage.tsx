@@ -23,7 +23,7 @@ const ProductDetailPage: React.FC = () => {
   const [activeImage, setActiveImage] = useState(0);
   const { addItem } = useCart();
   const defaultImage =
-    "https://images.pexels.com/photos/3587478/pexels-photo-3587478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+    "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
   useEffect(() => {
     const fetchProduct = async () => {
