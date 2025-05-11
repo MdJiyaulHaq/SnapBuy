@@ -74,10 +74,8 @@ urlpatterns = [
     path(
         "api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
-    # Serve frontend for all other routes
-    re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
-    path("", serve_spa),
-    path("<path:path>", serve_spa),
+    # Serve frontend for all other routes except excluded prefixes
+    re_path(r"^(?!api/|assets/|static/|media/|__debug__/).*$", TemplateView.as_view(template_name="index.html")),
 ]
 
 if settings.DEBUG:
