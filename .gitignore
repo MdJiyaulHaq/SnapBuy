@@ -86,3 +86,8 @@ node_modules/
 
 # Ignore development requirements
 requirements_dev.txt
+# Environment variables
+.env
+.env.local
+.env.prod
+.env.*.local
