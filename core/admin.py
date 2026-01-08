@@ -44,3 +44,4 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
             },
         ),
     )
+    readonly_fields=["date_joined", "last_login"]
